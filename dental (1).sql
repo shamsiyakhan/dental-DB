@@ -18,6 +18,31 @@ USE `dental`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `admin`
+--
+
+DROP TABLE IF EXISTS `admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `admin` (
+  `admin_id` varchar(50) DEFAULT NULL,
+  `fullname` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `phone` mediumtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `admin`
+--
+
+LOCK TABLES `admin` WRITE;
+/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `appointment`
 --
 
@@ -223,6 +248,34 @@ LOCK TABLES `payment` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `test`
+--
+
+DROP TABLE IF EXISTS `test`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test` (
+  `test_id` varchar(50) DEFAULT NULL,
+  `test_name` varchar(100) DEFAULT NULL,
+  `complaint_id` varchar(50) DEFAULT NULL,
+  `test_cost` mediumtext DEFAULT NULL,
+  `payment_status` varchar(20) DEFAULT NULL,
+  `test_date` date DEFAULT NULL,
+  KEY `complaint_id` (`complaint_id`),
+  CONSTRAINT `test_ibfk_1` FOREIGN KEY (`complaint_id`) REFERENCES `cheif_complaint` (`complaint_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test`
+--
+
+LOCK TABLES `test` WRITE;
+/*!40000 ALTER TABLE `test` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `treatment_details`
 --
 
@@ -337,4 +390,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-24 13:54:40
+-- Dump completed on 2025-04-24 14:24:53
