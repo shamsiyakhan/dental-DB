@@ -39,6 +39,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES ('101','Shayban Khan','shayban@gmail.com','VGVzdDEyM0A=','7894561230');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,8 +53,10 @@ DROP TABLE IF EXISTS `appointment`;
 CREATE TABLE `appointment` (
   `appointment_id` varchar(50) NOT NULL,
   `treatment_id` varchar(50) DEFAULT NULL,
-  `appointment_date` date DEFAULT NULL,
+  `appointment_date` datetime DEFAULT NULL,
   `dept_id` varchar(50) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `payment_status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`),
   KEY `fk_appointment_department` (`dept_id`),
   CONSTRAINT `fk_appointment_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`)
@@ -66,6 +69,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
+INSERT INTO `appointment` VALUES ('AZnVVPUc48','1TPbFlxTQo','2025-05-03 16:00:00','aK8JyQl9Ph','Scheduled','paid'),('jeh4eXLpRP','998uZsaSsv','2025-05-12 19:01:00','aK8JyQl9Ph','Scheduled','paid'),('Nps5JbLUOG','qPnLyJl9ZV','2025-05-05 17:30:00','G937M6ymmh','Scheduled','unpaid'),('vUxQeHDodX','VetHoypDvo','2025-05-13 18:30:00','aK8JyQl9Ph','Scheduled','paid'),('yedBPUh77m','IJHntk0O4C','2025-05-03 00:00:00','18MIA4AsbJ','completed','paid');
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,6 +119,9 @@ CREATE TABLE `cheif_complaint` (
   `tests` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`tests`)),
   `total_charge` mediumtext DEFAULT NULL,
   `payment_status` varchar(50) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `treatment_assigned_at` date DEFAULT NULL,
+  `payment_mode` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`complaint_id`),
   KEY `patientid` (`patientid`),
   CONSTRAINT `cheif_complaint_ibfk_1` FOREIGN KEY (`patientid`) REFERENCES `user` (`userid`)
@@ -127,7 +134,7 @@ CREATE TABLE `cheif_complaint` (
 
 LOCK TABLES `cheif_complaint` WRITE;
 /*!40000 ALTER TABLE `cheif_complaint` DISABLE KEYS */;
-INSERT INTO `cheif_complaint` VALUES ('DUbx1SLtl4','rzTxzmukVa','2025-04-23','Teeth Pain','[\"mri\",\"ct scan\"]','900','paid');
+INSERT INTO `cheif_complaint` VALUES ('03lriMApal','ZRGdofLkTS','2025-05-03','Teeth Whitening','[\"jChBSxtliq\"]','550','Paid','Treatment Assigned','2025-05-03','jChBSxtliq'),('0zvOZcaNpi','ZRGdofLkTS','2025-05-03','Teeth Whitening','[\"\"]','','Paid','Treatment Assigned','2025-05-03','Cash'),('5RI3HaMZ9t','ZRGdofLkTS','2025-05-03','Teeth Cleaning','[\"jChBSxtliq\"]','550','Paid','Treatment Assigned','2025-05-03','Cash'),('6FOMrch1e1','ZRGdofLkTS','2025-05-03','teeeth Cleaning','[\"jChBSxtliq\"]','550','Paid','Treatment Assigned','2025-05-03','Cash'),('qwV9bP2ZcS','FRaTT5t8b1','2025-05-03','Root canal','[\"jChBSxtliq\",\"9lTojSgx7h\"]','850','Paid','Treatment Assigned','2025-05-03','Cash'),('u3IWhlIs4J','eFJnNywunz','2025-05-03','Teeth Pai','[\"jChBSxtliq\",\"2Zf7F3qhmv\"]','4550','Paid','Treatment Assigned','2025-05-03','Cash'),('VAnkDQ0Nqk','CqwWFZDlQv','2025-05-03','Teeth Pain','[\"jChBSxtliq\",\"2Zf7F3qhmv\",\"9lTojSgx7h\"]','4850','Paid','Treatment Assigned','2025-05-03','Cash');
 /*!40000 ALTER TABLE `cheif_complaint` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +161,7 @@ CREATE TABLE `department` (
 
 LOCK TABLES `department` WRITE;
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
-INSERT INTO `department` VALUES ('18MIA4AsbJ','OMDR','Shayban','omdr@gmail.com','VGVzdDEyM0A='),('aK8JyQl9Ph','Prosthodontics and Crown & Bridge','Shamsiya Khan','pcb@gmail.com','VGVzdDEyM0A=');
+INSERT INTO `department` VALUES ('18MIA4AsbJ','OMDR','Shayban','omdr@gmail.com','VGVzdDEyM0A='),('aK8JyQl9Ph','Prosthodontics and Crown & Bridge','Shamsiya Khan','pcb@gmail.com','VGVzdDEyM0A='),('G937M6ymmh','Conservative Dentistry & Endodontics','Shamsiya','cde@gmail.com','VGVzdDEyM0A=');
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,6 +211,9 @@ CREATE TABLE `doctor` (
   `dept_id` varchar(50) DEFAULT NULL,
   `gender` varchar(20) DEFAULT NULL,
   `dob` date DEFAULT NULL,
+  `qualification` varchar(50) DEFAULT NULL,
+  `specialization` varchar(50) DEFAULT NULL,
+  `biography` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`doctor_id`),
   UNIQUE KEY `email` (`email`),
   KEY `dept_id` (`dept_id`),
@@ -217,7 +227,7 @@ CREATE TABLE `doctor` (
 
 LOCK TABLES `doctor` WRITE;
 /*!40000 ALTER TABLE `doctor` DISABLE KEYS */;
-INSERT INTO `doctor` VALUES ('AgNrcuuLru','Fareeha Shakeel','fareeha@gmail.com','VGVzdDEyM0A=',1,'MBBS','8149863141','Camp','Single','aK8JyQl9Ph','Female','2000-03-29');
+INSERT INTO `doctor` VALUES ('AgNrcuuLru','Fareeha Shakeel','fareeha@gmail.com','VGVzdDEyM0A=',1,'MBBS','8149863141','Camp','Single','aK8JyQl9Ph','Female','2000-03-29','mbbs','Cardiologist','Love to read books');
 /*!40000 ALTER TABLE `doctor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,15 +265,20 @@ DROP TABLE IF EXISTS `test`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `test` (
-  `test_id` varchar(50) DEFAULT NULL,
-  `test_name` varchar(100) DEFAULT NULL,
-  `complaint_id` varchar(50) DEFAULT NULL,
-  `test_cost` mediumtext DEFAULT NULL,
-  `payment_status` varchar(20) DEFAULT NULL,
+  `test_id` int(11) NOT NULL AUTO_INCREMENT,
+  `test_name` varchar(50) DEFAULT NULL,
+  `test_price` bigint(20) DEFAULT NULL,
   `test_date` date DEFAULT NULL,
-  KEY `complaint_id` (`complaint_id`),
-  CONSTRAINT `test_ibfk_1` FOREIGN KEY (`complaint_id`) REFERENCES `cheif_complaint` (`complaint_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `userid` varchar(50) DEFAULT NULL,
+  `referred_dept` varchar(50) DEFAULT NULL,
+  `complain_id` varchar(50) DEFAULT NULL,
+  `report_status` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`test_id`),
+  KEY `userid` (`userid`),
+  KEY `referred_dept` (`referred_dept`),
+  CONSTRAINT `test_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE,
+  CONSTRAINT `test_ibfk_2` FOREIGN KEY (`referred_dept`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,7 +287,35 @@ CREATE TABLE `test` (
 
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
+INSERT INTO `test` VALUES (9,'X_RAY',500,'2025-05-03','rzTxzmukVa','18MIA4AsbJ','oS9PNmI5lz','In process'),(10,'Dental Crown (PFM)',4000,'2025-05-03','rzTxzmukVa','18MIA4AsbJ','oS9PNmI5lz','In process'),(11,'X_RAY',500,'2025-05-03','CqwWFZDlQv','18MIA4AsbJ','Q98GGp7Ozr','In process'),(12,'Dental Crown (PFM)',4000,'2025-05-03','CqwWFZDlQv','18MIA4AsbJ','Q98GGp7Ozr','In process'),(13,'X_RAY',500,'2025-05-03','CqwWFZDlQv','18MIA4AsbJ','VAnkDQ0Nqk','In process'),(14,'Dental Crown (PFM)',4000,'2025-05-03','CqwWFZDlQv','18MIA4AsbJ','VAnkDQ0Nqk','In process'),(15,'Dental Cavity Checkup',300,'2025-05-03','CqwWFZDlQv','18MIA4AsbJ','VAnkDQ0Nqk','In process'),(16,'X_RAY',500,'2025-05-03','eFJnNywunz','18MIA4AsbJ','u3IWhlIs4J','In process'),(17,'Dental Crown (PFM)',4000,'2025-05-03','eFJnNywunz','18MIA4AsbJ','u3IWhlIs4J','In process'),(18,'X_RAY',500,'2025-05-03','FRaTT5t8b1','18MIA4AsbJ','qwV9bP2ZcS','In process'),(19,'Dental Cavity Checkup',300,'2025-05-03','FRaTT5t8b1','18MIA4AsbJ','qwV9bP2ZcS','In process'),(20,'X_RAY',500,'2025-05-03','ZRGdofLkTS','18MIA4AsbJ','6FOMrch1e1','In process'),(21,'X_RAY',500,'2025-05-03','ZRGdofLkTS','18MIA4AsbJ','5RI3HaMZ9t','In process'),(22,'X_RAY',500,'2025-05-03','ZRGdofLkTS','18MIA4AsbJ','03lriMApal','In process');
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test_reports`
+--
+
+DROP TABLE IF EXISTS `test_reports`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test_reports` (
+  `report_id` int(11) NOT NULL AUTO_INCREMENT,
+  `test_id` int(11) DEFAULT NULL,
+  `image_path` varchar(255) DEFAULT NULL,
+  `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`report_id`),
+  KEY `test_id` (`test_id`),
+  CONSTRAINT `test_reports_ibfk_1` FOREIGN KEY (`test_id`) REFERENCES `test` (`test_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_reports`
+--
+
+LOCK TABLES `test_reports` WRITE;
+/*!40000 ALTER TABLE `test_reports` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_reports` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -290,11 +333,11 @@ CREATE TABLE `treatment_details` (
   `total_charges` mediumtext DEFAULT NULL,
   `finding` varchar(50) DEFAULT NULL,
   `history` varchar(50) DEFAULT NULL,
-  `reports` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`reports`)),
   `dept_id` varchar(50) DEFAULT NULL,
   `patientid` varchar(50) DEFAULT NULL,
   `doctorid` varchar(50) DEFAULT NULL,
   `complaint_id` varchar(50) DEFAULT NULL,
+  `payment_status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`treatment_id`),
   KEY `dept_id` (`dept_id`),
   KEY `patientid` (`patientid`),
@@ -313,6 +356,7 @@ CREATE TABLE `treatment_details` (
 
 LOCK TABLES `treatment_details` WRITE;
 /*!40000 ALTER TABLE `treatment_details` DISABLE KEYS */;
+INSERT INTO `treatment_details` VALUES ('1TPbFlxTQo','Teeth Whitening','2025-05-02','In Process',NULL,'','','aK8JyQl9Ph','ZRGdofLkTS',NULL,'03lriMApal','Paid'),('998uZsaSsv','Teeth Cleaning','2025-05-02','In Process',NULL,'','','aK8JyQl9Ph','ZRGdofLkTS',NULL,'5RI3HaMZ9t','Paid'),('IJHntk0O4C','Teeth Pai','2025-05-02','In Process',NULL,'','','18MIA4AsbJ','eFJnNywunz',NULL,'u3IWhlIs4J','Paid'),('kEx4uQdbsw','Teeth Whitening','2025-05-13','In Process',NULL,'','','aK8JyQl9Ph','ZRGdofLkTS',NULL,'0zvOZcaNpi','Paid'),('lMoGzMy36X','teeeth Cleaning','2025-05-02','In Process',NULL,'','',NULL,'ZRGdofLkTS',NULL,'6FOMrch1e1','Paid'),('qPnLyJl9ZV','Teeth Pain','2025-05-02','In Process','5000','','','G937M6ymmh','CqwWFZDlQv',NULL,'VAnkDQ0Nqk','Paid'),('VetHoypDvo','Root canal','2025-05-02','In Process','10000','','','aK8JyQl9Ph','FRaTT5t8b1',NULL,'qwV9bP2ZcS','Paid');
 /*!40000 ALTER TABLE `treatment_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,7 +370,11 @@ DROP TABLE IF EXISTS `treatment_master`;
 CREATE TABLE `treatment_master` (
   `treatment_id` varchar(50) DEFAULT NULL,
   `treatment_name` varchar(50) DEFAULT NULL,
-  `treatment_price` mediumtext DEFAULT NULL
+  `treatment_price` mediumtext DEFAULT NULL,
+  `type` varchar(20) DEFAULT NULL,
+  `dept_id` varchar(50) DEFAULT NULL,
+  KEY `fk_treatment_dept` (`dept_id`),
+  CONSTRAINT `fk_treatment_dept` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -336,6 +384,7 @@ CREATE TABLE `treatment_master` (
 
 LOCK TABLES `treatment_master` WRITE;
 /*!40000 ALTER TABLE `treatment_master` DISABLE KEYS */;
+INSERT INTO `treatment_master` VALUES ('jChBSxtliq','X_RAY','500','test','18MIA4AsbJ'),('2Zf7F3qhmv','Dental Crown (PFM)','4000','test','18MIA4AsbJ'),('9lTojSgx7h','Dental Cavity Checkup','300','test','18MIA4AsbJ'),('8Iwe2n59ZH','CBCT Scan (Cone Beam CT)','5000','test','18MIA4AsbJ'),('LHr7eV9wXe','Tooth Sensitivity Test','150','test','18MIA4AsbJ'),('he9RLkn61m','Pulp Vitality Test','600','test','18MIA4AsbJ'),('oE3LuUD5BD','Root Canal','8000','treatment','G937M6ymmh');
 /*!40000 ALTER TABLE `treatment_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -359,7 +408,9 @@ CREATE TABLE `user` (
   `phone` mediumtext DEFAULT NULL,
   `emergency_contact` mediumtext DEFAULT NULL,
   `emergency_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`userid`)
+  `registration_payment_type` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `unique_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -369,7 +420,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('eFJnNywunz','abul@gmail.com','VGVzdDEyM0A=','Abul fazal','Kondwa','Male','Married','2004-02-17','patient','9876543210','9876543210','Shayban'),('rzTxzmukVa','shamsiya@gmail.com','VGVzdDEyM0A=','Shamsiya Khan','Kharadi','Female','Single','1999-04-27','patient','9898989898','978654321','shayban');
+INSERT INTO `user` VALUES ('CqwWFZDlQv','shamsiya1@kalpas.in','Vm10a1YyVnRVa1ZTV0d4T1RVVkZPUT09','Shamsiya khan','Camp pune','Female','Single','1999-04-24','Patient','7841849748','8149863141','Shayban Khan','Online'),('eFJnNywunz','abul@gmail.com','VGVzdDEyM0A=','Abul fazal','Kondwa','Male','Married','2004-02-17','patient','9876543210','9876543210','Shayban',NULL),('FRaTT5t8b1','shaybankhan@gmail.com','VGVzdDEyM0A=','Shayban Khan','Camp center street','Female','','1974-06-01','Patient','+918149863141','7841849749','Shamsiya Khan','UPI'),('qlSwZhbGGG','malik@gmail.com','VGVzdDEyM0A=','Malik Ahmed','lucknow','Male','Single','1999-10-23','Clerk','9527789211','8149863141','Shayban Khan',NULL),('rzTxzmukVa','shamsiya@gmail.com','VGVzdDEyM0A=','Shamsiya Khan','Kharadi','Female','Single','1999-04-27','patient','9898989898','978654321','shayban',NULL),('ZRGdofLkTS','shamsiya@kalpas.in','VGVzdDEyM0A=','Shamsiya khan','Kharadi','Female','Single','1999-04-27','Patient','7841849748','8149863141','Shayban Khan','Online');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,4 +441,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-24 14:24:53
+-- Dump completed on 2025-08-02 12:05:03
